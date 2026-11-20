@@ -1,0 +1,8 @@
+raga_emotion.db
+raga_emotion_backup.db
+__pycache__/
+*.pyc
+.env
+venv/
+.venv/
+static/audio/*.mp3

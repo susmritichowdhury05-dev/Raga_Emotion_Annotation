@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">ADMINISTRATION</p><h1>Research dashboard</h1><p>Monitor participants, raga recordings and submitted annotations.</p></div>
+<div class="stats-grid">
+  <div class="stat-card"><span>Registered participants</span><strong>{{ participants|length }}</strong></div>
+  <div class="stat-card"><span>Raga recordings</span><strong>{{ ragas|length }}</strong></div>
+  <div class="stat-card"><span>Submitted annotations</span><strong>{{ annotations|length }}</strong></div>
+  <div class="stat-card"><span>Listening records</span><strong>{{ total_listening }}</strong></div>
+</div>
+<section class="form-card">
+  <div class="section-title"><h2>Add a raga recording</h2></div>
+  <form method="post" action="{{ url_for('add_raga') }}" enctype="multipart/form-data">
+    <div class="form-grid">
+      <label>Raga name *<input name="name" required></label>
+      <label>Thaat<input name="thaat"></label>
+      <label>Performer<input name="performer"></label>
+      <label>Rendition type<select name="rendition_type"><option>Instrumental</option><option>Vocal</option></select></label>
+      <label>Duration<input name="duration" placeholder="e.g. 4:30"></label>
+      <label>Audio file (MP3/WAV/OGG/M4A)<input type="file" name="audio" accept=".mp3,.wav,.ogg,.m4a,audio/*"></label>
+    </div>
+    <label>Recording information<input name="recording_info"></label>
+    <button class="button" type="submit">Add raga</button>
+  </form>
+</section>
+<section class="form-card">
+  <div class="section-title"><h2>Participants</h2><span class="status">{{ participants|length }} total</span></div>
+  <div class="table-wrap"><table><thead><tr><th>ID</th><th>Username</th><th>Age</th><th>Gender</th><th>Education</th><th>Musical background</th><th>Registered</th></tr></thead><tbody>
+  {% for p in participants %}<tr><td>{{ p.id }}</td><td>{{ p.username }}</td><td>{{ p.age or '—' }}</td><td>{{ p.gender or '—' }}</td><td>{{ p.education or '—' }}</td><td>{{ p.musical_background or '—' }}</td><td>{{ p.created_at }}</td></tr>
+  {% else %}<tr><td colspan="7">No participants registered yet.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+<section class="form-card">
+  <div class="section-title"><h2>Emotion annotations</h2><a class="button button-small" href="{{ url_for('export_csv') }}">Export CSV</a></div>
+  <div class="table-wrap"><table><thead><tr><th>Participant</th><th>Raga</th><th>Listening (sec)</th>{% for key, sanskrit, english in emotions %}<th>{{ sanskrit }}</th>{% endfor %}<th>Date</th></tr></thead><tbody>
+  {% for a in annotations %}<tr><td>{{ a.username }}</td><td>{{ a.raga_name }}</td><td>{{ a.listened_seconds }}</td><td>{{ a.sringara }}</td><td>{{ a.hasya }}</td><td>{{ a.karuna }}</td><td>{{ a.raudra }}</td><td>{{ a.vira }}</td><td>{{ a.bhayanaka }}</td><td>{{ a.bibhatsa }}</td><td>{{ a.adbhuta }}</td><td>{{ a.shanta }}</td><td>{{ a.created_at }}</td></tr>
+  {% else %}<tr><td colspan="13">No annotations submitted yet.</td></tr>{% endfor %}
+  </tbody></table></div>
+</section>
+{% endblock %}

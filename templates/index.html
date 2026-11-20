@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Home | RagaSense{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">MUSIC · EMOTION · RESEARCH</p>
+    <h1>Every raga tells a story.<br><em>What do you feel?</em></h1>
+    <p class="lead">Listen to Hindustani classical music and share the emotions you experience. Your responses help create a research dataset for Music Emotion Recognition.</p>
+    <div class="actions">
+      <a class="button" href="{{ url_for('register') }}">Join as a participant</a>
+      <a class="button button-outline" href="{{ url_for('login') }}">Login</a>
+    </div>
+  </div>
+  <div class="hero-art"><div class="music-orbit">♫</div><div class="orbit-caption">THE LANGUAGE OF RAGAS</div></div>
+</section>
+<section class="info-grid">
+  <article class="info-card"><span>01</span><h3>Listen</h3><p>Listen carefully to a Hindustani raga recording for at least one minute.</p></article>
+  <article class="info-card"><span>02</span><h3>Feel</h3><p>Reflect on the nine traditional Navarasa emotions.</p></article>
+  <article class="info-card"><span>03</span><h3>Annotate</h3><p>Rate each emotion on a simple scale from 0 to 4.</p></article>
+</section>
+<p class="small-note">Research prototype: participant responses are stored for analysis. Please use test data while developing and obtain appropriate consent before collecting real participant data.</p>
+{% endblock %}

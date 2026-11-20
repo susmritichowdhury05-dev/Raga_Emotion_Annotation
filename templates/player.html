@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Listen to {{ raga.name }}{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">LISTENING ROOM</p><h1>Raga {{ raga.name }}</h1><p>{{ raga.thaat or 'Hindustani classical' }} · {{ raga.rendition_type or 'Recording' }} · {{ raga.performer or 'Performer not specified' }}</p></div>
+<div class="player-card">
+  <div class="raga-symbol large">♫</div>
+  <h2>{{ raga.name }}</h2>
+  {% if raga.audio_file %}
+    <audio id="ragaAudio" controls preload="metadata">
+      <source src="{{ url_for('static', filename='audio/' + raga.audio_file) }}">
+      Your browser does not support audio playback.
+    </audio>
+  {% else %}
+    <div class="alert warning">No audio file has been uploaded for this raga yet. Ask the administrator to upload an audio recording.</div>
+  {% endif %}
+  <div class="listen-status">
+    <div><span class="muted">Total listening time recorded</span><strong id="timer"> {{ listened_seconds // 60 }}:{{ '%02d' % (listened_seconds % 60) }}</strong></div>
+    <span id="unlockStatus" class="status {% if listened_seconds >= 60 %}done{% endif %}">{% if listened_seconds >= 60 %}Unlocked{% else %}Locked · 1 minute required{% endif %}</span>
+  </div>
+  <div class="progress-track"><div id="listenProgress" style="width:{{ [listened_seconds,60]|min / 60 * 100 }}%"></div></div>
+  <p class="small-note">Only time while the audio is playing is counted. You can pause and continue; your recorded listening time is retained.</p>
+</div>
+
+<section class="form-card annotation-card">
+  <div class="section-title"><div><p class="eyebrow">YOUR EXPERIENCE</p><h2>Emotion annotation</h2></div><span id="formLock" class="status {% if listened_seconds >= 60 %}done{% endif %}">{% if listened_seconds >= 60 %}Available{% else %}Locked{% endif %}</span></div>
+  {% if already_annotated %}
+    <div class="alert success">You have already submitted your ratings for this raga. Thank you!</div>
+  {% else %}
+  <p>Rate how strongly you felt each emotion. Scale: 0 = Not at all, 1 = Slightly, 2 = Moderately, 3 = Strongly, 4 = Felt the most.</p>
+  <form method="post" action="{{ url_for('submit_annotation', raga_id=raga.id) }}" id="emotionForm">
+    <div class="emotion-list">
+      {% for key, sanskrit, english in emotions %}
+      <div class="emotion-row">
+        <div><strong>{{ sanskrit }}</strong><span>{{ english }}</span></div>
+        <label class="rating-label">Rating
+          <select name="{{ key }}" class="rating-select" required>
+            <option value="0">0 · Not at all</option><option value="1">1 · Slightly</option>
+            <option value="2">2 · Moderately</option><option value="3">3 · Strongly</option>
+            <option value="4">4 · Felt the most</option>
+          </select>
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+    <button class="button full" id="submitRatings" type="submit" {% if listened_seconds < 60 %}disabled{% endif %}>Submit all nine ratings</button>
+  </form>
+  {% endif %}
+</section>
+<script>
+  window.RAGA_CONFIG = {
+    ragaId: {{ raga.id }},
+    initialSeconds: {{ listened_seconds }},
+    hasAudio: {{ 'true' if raga.audio_file else 'false' }},
+    progressUrl: {{ url_for('listen_progress')|tojson }}
+  };
+</script>
+<script src="{{ url_for('static', filename='js/player.js') }}"></script>
+{% endblock %}

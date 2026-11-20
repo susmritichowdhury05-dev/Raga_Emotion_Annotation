@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Choose a Raga{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">PARTICIPANT AREA</p><h1>Choose a raga</h1><p>Select a recording to begin. Listen for at least one minute before rating the emotions.</p></div>
+<div class="raga-grid">
+{% for r in ragas %}
+  <article class="raga-card">
+    <div class="raga-symbol">♫</div><p class="eyebrow">{{ r.thaat or 'Hindustani classical' }}</p>
+    <h2>{{ r.name }}</h2><p>{{ r.rendition_type or 'Recording' }} · {{ r.performer or 'Performer not specified' }}</p>
+    {% if r.id in completed %}<span class="status done">Annotation submitted</span>{% else %}<span class="status">Ready to listen</span>{% endif %}
+    <a class="button full" href="{{ url_for('listen', raga_id=r.id) }}">Open raga</a>
+  </article>
+{% else %}<p>No ragas have been added yet. Please contact the administrator.</p>{% endfor %}
+</div>
+{% endblock %}

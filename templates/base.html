@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Raga & Emotion{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">♫</span> Raga<span>Sense</span></a>
+  <nav>
+    <a href="{{ url_for('index') }}">Home</a>
+    {% if current_user %}
+      {% if current_role == 'admin' %}<a href="{{ url_for('admin') }}">Admin Dashboard</a>
+      {% else %}<a href="{{ url_for('ragas') }}">Listen to Ragas</a>{% endif %}
+      <span class="nav-user">{{ current_user }}</span>
+      <a class="nav-button" href="{{ url_for('logout') }}">Log out</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Login</a>
+      <a class="nav-button" href="{{ url_for('register') }}">Register</a>
+    {% endif %}
+  </nav>
+</header>
+<main class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}{% for category, message in messages %}
+      <div class="alert {{ category }}">{{ message }}</div>
+    {% endfor %}{% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer>RagaSense · Hindustani Raga Emotion Annotation Research Prototype</footer>
+</body>
+</html>

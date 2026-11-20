@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Participant Registration{% endblock %}
+{% block content %}
+<div class="page-heading"><p class="eyebrow">GET STARTED</p><h1>Participant registration</h1><p>Fill in the details below. Fields marked optional can be left blank.</p></div>
+<form method="post" class="form-card">
+  <h2>Account details</h2>
+  <div class="form-grid">
+    <label>Username *<input name="username" required minlength="3" autocomplete="username"></label>
+    <label>Password *<input type="password" name="password" required minlength="8" autocomplete="new-password"><small>At least 8 characters.</small></label>
+  </div>
+  <h2>Participant profile</h2>
+  <div class="form-grid">
+    <label>Age<input name="age" type="number" min="1" max="120"></label>
+    <label>Gender
+      <select name="gender"><option value="">Prefer not to say</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Other</option></select>
+    </label>
+    <label>Educational qualification<input name="education"></label>
+    <label>Occupation<input name="occupation"></label>
+    <label>Country / State / Region<input name="location"></label>
+    <label>Native language<input name="native_language"></label>
+    <label>Musical background
+      <select name="musical_background"><option value="">Choose</option><option>Trained</option><option>Untrained</option><option>Some informal learning</option></select>
+    </label>
+    <label>Years of musical training<input name="years_training" placeholder="e.g. 2 years / None"></label>
+    <label>Familiarity with Indian classical music
+      <select name="familiarity_music"><option value="">Choose</option><option>Not familiar</option><option>Slightly familiar</option><option>Moderately familiar</option><option>Very familiar</option></select>
+    </label>
+    <label>Familiarity with the specific raga
+      <select name="familiarity_raga"><option value="">Choose</option><option>Not familiar</option><option>Slightly familiar</option><option>Moderately familiar</option><option>Very familiar</option></select>
+    </label>
+    <label>Frequency of listening to Indian classical music
+      <select name="listening_frequency"><option value="">Choose</option><option>Daily</option><option>Several times a week</option><option>Once a week</option><option>Occasionally</option><option>Never</option></select>
+    </label>
+  </div>
+  <label class="consent"><input type="checkbox" required> I understand that my responses will be stored for this research project.</label>
+  <button class="button" type="submit">Create participant account</button>
+</form>
+{% endblock %}
