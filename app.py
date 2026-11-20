@@ -352,10 +352,15 @@ def export_csv():
     response.headers["Content-Type"] = "text/csv; charset=utf-8"
     return response
 
+
+# Initialize database when the application starts
+init_db()
+
 if __name__ == "__main__":
-    init_db()
     app.run(
         host="0.0.0.0",
         port=int(os.environ.get("PORT", 5000)),
         debug=False
     )
+
+
